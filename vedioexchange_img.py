@@ -66,8 +66,8 @@ class ITS_tools(object):
 if __name__ == "__main__": 
     vedioPath = u'E:\Test/123.mp4'
     imgPath = r'F:\Test/tu/'
-    vedioPath = r"/home/zhangchang/mygithub/-image_processing/output/test.avi"
-    imgPath = r"/home/zhangchang/data/graduate/data/images/"
+    #vedioPath = r"/home/zhangchang/mygithub/-image_processing/output/test.avi"
+  #  imgPath = r"/home/zhangchang/data/graduate/data/images/"
     # ITS_tools.vedio_toimg(vedioPath,imgPath,imgNumber = 1)
     its_tools_instance = ITS_tools()
     its_tools_instance.img_tovedio(vedioPath, imgPath)
