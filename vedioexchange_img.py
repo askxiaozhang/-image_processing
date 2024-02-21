@@ -3,6 +3,7 @@ import cv2
 import os
 import cv2 as cv
 import numpy as np
+import subprocess
 
 class ITS_tools(object):
      #视频转图片的方法
@@ -30,9 +31,13 @@ class ITS_tools(object):
                 suc = False
         capture.release()
         print("视频转图片结束! ")  
-    
-    @staticmethod #封装为静态方法
-    def img_tovedio(vedioPath,imgPath,vedio_fps = 25,isColor = 1):  #图片转为视频的方法
+    def avi_to_web_mp4(self, input_file_path):
+        output_file_path = input_file_path.replace('.avi', '.mp4')
+        cmd = "ffmpeg -y -i {} -vcodec h264 {}".format(input_file_path, output_file_path)
+        subprocess.call(cmd, shell=True)
+        return output_file_path
+
+    def img_tovedio(self, vedioPath, imgPath, vedio_fps = 25,isColor = 1):  #图片转为视频的方法
         '''
         parmas:
             isColor : 是否为灰度图片，灰度图为0；彩色图为1
@@ -41,7 +46,7 @@ class ITS_tools(object):
             vedio_fps : 保存的视频帧数 默认为30
         '''
         print("正在进行图片转化为视频中……")
-        fourcc = cv2.VideoWriter_fourcc( 'm', 'p', '4 ', 'v')#设置输出视频为mp4格式# cap_fps是帧率,根据自己需求设置帧率
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')#设置输出视频为mp4格式# cap_fps是帧率,根据自己需求设置帧率
         cap_fps = vedio_fps
         file_lst = os.listdir(imgPath)
         file_lst = sorted(file_lst, key=lambda x: int(x.split('.')[0]) if x.endswith('.jpg') else -1)
@@ -53,9 +58,16 @@ class ITS_tools(object):
             video.write(img)
         video.release()
         print("转化完毕")
+        print("正在转化为web可支持的")
+        self.avi_to_web_mp4(vedioPath)
+
+
         
 if __name__ == "__main__": 
     vedioPath = u'E:\Test/123.mp4'
     imgPath = r'F:\Test/tu/'
+    vedioPath = r"/home/zhangchang/mygithub/-image_processing/output/test.avi"
+    imgPath = r"/home/zhangchang/data/graduate/data/images/"
     # ITS_tools.vedio_toimg(vedioPath,imgPath,imgNumber = 1)
-    ITS_tools.img_tovedio(vedioPath, imgPath)
+    its_tools_instance = ITS_tools()
+    its_tools_instance.img_tovedio(vedioPath, imgPath)
