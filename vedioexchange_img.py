@@ -32,7 +32,7 @@ class ITS_tools(object):
         print("视频转图片结束! ")  
     
     @staticmethod #封装为静态方法
-    def img_tovedio(vedioPath,imgPath,vedio_fps = 30,isColor = 1):  #图片转为视频的方法
+    def img_tovedio(vedioPath,imgPath,vedio_fps = 25,isColor = 1):  #图片转为视频的方法
         '''
         parmas:
             isColor : 是否为灰度图片，灰度图为0；彩色图为1
@@ -44,6 +44,7 @@ class ITS_tools(object):
         fourcc = cv2.VideoWriter_fourcc( 'm', 'p', '4 ', 'v')#设置输出视频为mp4格式# cap_fps是帧率,根据自己需求设置帧率
         cap_fps = vedio_fps
         file_lst = os.listdir(imgPath)
+        file_lst = sorted(file_lst, key=lambda x: int(x.split('.')[0]) if x.endswith('.jpg') else -1)
         img = cv2.imread(imgPath + file_lst[0]) #取第一张图片的大小
         size = (img.shape[1],img.shape[0])
         video = cv2.VideoWriter(vedioPath,fourcc,vedio_fps,size,isColor)
